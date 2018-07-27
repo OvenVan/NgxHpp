@@ -28,6 +28,15 @@ const char* toStr(ngx_str_t* nstr, T* m_t)
 {
 	return toStr(nstr, m_t->pool);
 }
+
+ngx_str_t toNgxstr(const char* str)
+{
+	ngx_str_t rtn_str;
+	rtn_str.len = strlen(str);
+	rtn_str.data = (u_char*) str;
+	return rtn_str;
+}
+
 //it's noot good. if we change m_str too often, it will cause a lot of memory waste.
 class NgxString
 {

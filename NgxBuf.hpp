@@ -56,7 +56,7 @@ public:
 		return ngx_buf_size(m_b);
 	}
 	
-	bool last() const
+	bool isLast() const
 	{
 		return (m_b->last_buf || m_b->last_in_chain);
 	}
@@ -75,13 +75,9 @@ public:
 		{
 			return NGX_HTTP_NOT_FOUND;
 		}
-printf("fulfill: name.data = %s\n", (const char*)_file->name.data);
-printf("fulfill: m_filename = %s\n", _ngxfile.getPath());
-		if (fstat(_file->fd, &(_file->info)) == NGX_FILE_ERROR)
-		{
-printf("error: %s\n", strerror(errno));
-			return NGX_HTTP_INTERNAL_SERVER_ERROR;
-		}
+printf("fulfillfile: name.data = %s\n", (const char*)_file->name.data);
+printf("fulfillfile: m_filename = %s\n", _ngxfile.getPath());
+printf("fstat filesize = %d\n", (int)_file->info.st_size);
 		m_b->in_file = 1;
 		m_b->file = _file;
 		m_b->file_pos = 0;

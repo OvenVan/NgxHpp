@@ -6,11 +6,3 @@ extern "C"{
 	#include <ngx_string.h>
 }
 
-#ifndef __NGINX_HPP__
-#define __NGINX_HPP__
-
-bool IsNull(void* p){
-	return (p == nullptr) ? true : false;
-}
-
-#endif

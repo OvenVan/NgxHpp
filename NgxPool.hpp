@@ -26,7 +26,7 @@ public:
 	T* alloc() const
 	{
 		auto p = ngx_pcalloc(m_pool, sizeof(T));
-		if	(IsNull(p)) return nullptr;
+		if	(p == nullptr) return nullptr;
 		return new(p) T();
 	}
 
@@ -34,7 +34,7 @@ public:
 	T* alloc(size_t n) const
 	{
 		auto p = ngx_pnalloc(m_pool, n);
-		if	(IsNull(p)) return nullptr;
+		if	(p == nullptr) return nullptr;
 		return reinterpret_cast<T*>(p);
 	}
 
@@ -43,7 +43,7 @@ public:
 	ngx_pool_cleanup_t* cleanup(F func, T* data) const
 	{
 		ngx_pool_cleanup_t* p = ngx_pool_cleanup_add(m_pool, 0);
-		if	(IsNull(p)) return nullptr;
+		if (p == nullptr) return nullptr;
 
 		p->handler = reinterpret_cast<ngx_pool_cleanup_pt>(func);
 
@@ -56,7 +56,7 @@ public:
 	{
 		auto p = ngx_pool_cleanup_add(m_pool, size);
 
-		if	(IsNull(p)) return nullptr;
+		if	(p == nullptr) return nullptr;
 		p->handler = func;
 		return p;
 	}

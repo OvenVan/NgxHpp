@@ -25,6 +25,6 @@ public:
 	
 };
 
-auto&& ngx_nil = NgxUnsetValue::get();
+/*__attribute__((unused))*/ static auto&& ngx_nil = NgxUnsetValue::get();
 
 #endif

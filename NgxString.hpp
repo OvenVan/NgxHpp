@@ -4,7 +4,8 @@
 #ifndef __NGX_STRING_HPP__
 #define __NGX_STRING_HPP__
 	
-const char* toStr(ngx_str_t* nstr, ngx_pool_t* m_p)
+__attribute__((unused)) 
+static const char* toStr(ngx_str_t* nstr, ngx_pool_t* m_p)
 {
 	u_char* ustr = NgxPool(m_p).alloc<u_char>(nstr->len + 1);
 	ngx_memcpy(ustr, nstr->data, nstr->len);
@@ -12,24 +13,28 @@ const char* toStr(ngx_str_t* nstr, ngx_pool_t* m_p)
 	return (const char*) ustr;
 }
 
-const char* toStr(ngx_str_t& nstr, ngx_pool_t* m_p) 
+__attribute__((unused)) 
+static const char* toStr(ngx_str_t& nstr, ngx_pool_t* m_p) 
 {
 	return toStr(&nstr, m_p);
 }
 
 template<typename T>
-const char* toStr(ngx_str_t& nstr, T* m_t) 
+__attribute__((unused))
+static const char* toStr(ngx_str_t& nstr, T* m_t) 
 {
 	return toStr(&nstr, m_t->pool);
 }
 
 template<typename T>
-const char* toStr(ngx_str_t* nstr, T* m_t) 
+__attribute__((unused)) 
+static const char* toStr(ngx_str_t* nstr, T* m_t) 
 {
 	return toStr(nstr, m_t->pool);
 }
 
-ngx_str_t toNgxstr(const char* str)
+__attribute__((unused)) 
+static ngx_str_t toNgxstr(const char* str)
 {
 	ngx_str_t rtn_str;
 	rtn_str.len = strlen(str);
@@ -37,7 +42,6 @@ ngx_str_t toNgxstr(const char* str)
 	return rtn_str;
 }
 
-//it's noot good. if we change m_str too often, it will cause a lot of memory waste.
 class NgxString
 {
 private:

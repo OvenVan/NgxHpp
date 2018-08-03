@@ -5,7 +5,7 @@
 #ifndef __NGX_HTTP_REQUEST_HPP__
 #define __NGX_HTTP_REQUEST_HPP__
 
-class NgxHTTPRequest
+class NgxHTTPRequest			//get
 {
 private:
 	ngx_http_request_t* m_request;
@@ -76,6 +76,15 @@ public:
 		return m_request->exten.len;
 	}
 
+	const char* contentType()
+	{
+		return toStr(m_request->headers_out.content_type, m_request);
+	}
+
+	off_t& contentLength()
+	{
+		return m_request->headers_out.content_length_n;
+	}
 };
 
 #endif

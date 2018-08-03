@@ -1,7 +1,7 @@
 #include "Nginx.hpp"
-#include "NgxBuf.hpp"
 #include "NgxString.hpp"
 #include "NgxFile.hpp"
+#include "NgxChain.hpp"
 
 #ifndef __NGX_HTTP_RESPONSE_HPP__
 #define __NGX_HTTP_RESPONSE_HPP__
@@ -15,7 +15,7 @@ private:
 		return ngx_http_output_filter(m_request, ch);
 	}
 
-	void ContentType(ngx_str_t _type)
+	void contentType(ngx_str_t& _type)
 	{
 		m_request->headers_out.content_type = _type;
 	}
@@ -32,24 +32,30 @@ public:
 		m_request = r;
 	}
 
-	void Status(ngx_int_t _status = NGX_HTTP_OK)
+	void status(ngx_int_t _status = NGX_HTTP_OK)
 	{
 		m_request->headers_out.status = _status;
 	}
 
-	void ContentLength(ngx_int_t _length)
+	/*
+	void contentLength(ngx_int_t _length)
+	{
+		m_request->headers_out.content_length_n = _length;
+	}
+	*/
+	void contentLength(off_t _length)
 	{
 		m_request->headers_out.content_length_n = _length;
 	}
 
-	void ContentType(const char* _typestr)
+	void contentType(const char* _typestr)
 	{
 		ngx_str_t _str = toNgxstr(_typestr);
-		ContentType(_str);
+		contentType(_str);
 	}
-	void ContentType(NgxString& _typestr)
+	void contentType(NgxString& _typestr)
 	{
-		ContentType(_typestr.get());
+		contentType(_typestr.get());
 	}
 
 	ngx_int_t send()
@@ -85,11 +91,14 @@ public:
 
 	ngx_int_t send(NgxFile& _ngxFile)
 	{
-
 		NgxBuf buf(m_request);
 		buf.fulfill(_ngxFile);
-		auto rc = send(buf);
-		return rc;
+		return send(buf);
+	}
+
+	ngx_int_t send(NgxChain& _ngxChain)
+	{
+		return send(_ngxChain.get());
 	}
 
 	ngx_int_t flush() const

@@ -46,7 +46,7 @@ class NgxString
 {
 private:
 	u_char* m_str;
-	bool isAlloc;
+	bool isAlloc;  	//not useful.  current string uses the memory space or not
 	size_t allocSize;
 	u_char* allocSpace;
 
@@ -60,8 +60,8 @@ private:
 
 public:
 	template<typename T>
-	NgxString(const char* str, T* m_r)						//it depends, if *str is created by user, then 
-	{														//we don't need to malloc a new memory space.
+	NgxString(const char* str, T* m_r)	
+	{							
 		init();
 		set(str, m_r);
 	}
@@ -84,7 +84,7 @@ public:
 		init();
 	}
 	
-	const char* get()
+	const char* get() const
 	{
 		return (const char*)m_str;
 	}
@@ -92,14 +92,11 @@ public:
 	template<typename T>
 	ngx_int_t set(const char* str, T* m_r)
 	{
-		size_t length = strlen(str) + 1;					//however if *str is just an address from nginx
-
+		size_t length = strlen(str) + 1;		
 		if ((m_str == nullptr) || (length > allocSize))
 		{			//realloc
-printf("realloc: %s\n", str);
 			m_str = (u_char*)ngx_pcalloc(m_r->pool, length);
 			ngx_memcpy(m_str, str, length);				//including \0
-
 			allocSize = length;
 			allocSpace = m_str;
 		}
@@ -122,7 +119,7 @@ printf("realloc: %s\n", str);
 	template<typename T>
 	ngx_int_t set(ngx_str_t* ngxstr, T* m_r)
 	{
-		size_t length = ngxstr->len + 1;					//however if *str is just an address from nginx
+		size_t length = ngxstr->len + 1;	
 
 		if ((m_str == nullptr) || (length > allocSize))
 		{			//realloc
@@ -137,7 +134,6 @@ printf("realloc %s\n", toStr(ngxstr, m_r));
 			ngx_memcpy(allocSpace, ngxstr->data, length - 1);
 			allocSpace[length -1] = '\0';
 		}
-
 		isAlloc = true;
 		return NGX_OK;
 	}

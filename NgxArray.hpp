@@ -1,6 +1,5 @@
 #include "NgxPool.hpp"
 
-
 #ifndef __NGX_ARRAY_HPP__
 #define __NGX_ARRAY_HPP__
 
@@ -58,7 +57,5 @@ public:
 		prepare() = x;
 	}
 };
-
-
 
 #endif

@@ -44,18 +44,14 @@ public:
 	{
 		ngx_pool_cleanup_t* p = ngx_pool_cleanup_add(m_pool, 0);
 		if (p == nullptr) return nullptr;
-
 		p->handler = reinterpret_cast<ngx_pool_cleanup_pt>(func);
-
 		p->data = data;
-
 		return p;
 	}
 
 	ngx_pool_cleanup_t* cleanup(ngx_pool_cleanup_pt func, size_t size) const
 	{
 		auto p = ngx_pool_cleanup_add(m_pool, size);
-
 		if	(p == nullptr) return nullptr;
 		p->handler = func;
 		return p;
@@ -64,7 +60,6 @@ public:
 	template<typename T>
 	void cleanup(T* data) const
 	{
-//printf("NgxPool: i am the destroier!");
 		cleanup(&NgxPool::destory<T>, data);
 	}
 };

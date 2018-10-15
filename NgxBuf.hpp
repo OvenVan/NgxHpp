@@ -155,7 +155,7 @@ public:
 			}
 		}
 	}
-	bool isOnlyRead()
+	bool isOnlyRead() const
 	{
 		return (m_b->memory | m_b->mmap);
 	}

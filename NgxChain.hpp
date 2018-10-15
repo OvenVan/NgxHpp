@@ -18,7 +18,10 @@ private:
 	}
 	void init(ngx_pool_t* p, ngx_chain_t* ch = nullptr)
 	{
-		init(p);
+		m_p = p;
+		m_chain = nullptr;
+		m_end = nullptr;
+		//init(p);  why does not work??
 		if (ch)
 		{
 			m_chain = ch;
@@ -46,7 +49,8 @@ public:
 	template<typename T>
 	NgxChain(T* x, ngx_chain_t* ch = nullptr)
 	{
-		init(T->pool, ch);
+
+		init(x->pool, ch);
 	}
 	~NgxChain() = default;
 	
